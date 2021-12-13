@@ -5,21 +5,25 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Table(name="post_table")
-public class Post {
+@Table(name = "role_table")
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Integer id;
+    private Integer id;
 
-    private String text;
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private User user;
+
+    @OneToMany(mappedBy = "role", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Permission> permissionList;
 
 }

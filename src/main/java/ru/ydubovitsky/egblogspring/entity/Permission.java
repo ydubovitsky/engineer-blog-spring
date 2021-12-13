@@ -10,13 +10,16 @@ import javax.persistence.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "comment_table")
-public class Comment {
+@Table(name = "permission_table")
+public class Permission {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Integer id;
 
-    public String text;
+    private String name;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Role role;
 
 }
