@@ -1,6 +1,7 @@
 package ru.ydubovitsky.egblogspring.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasAnyAuthority('UPDATE')")
     public ResponseEntity<Post> addPost(@RequestBody Post post) {
         Post savedPost = postService.addPost(post);
         return ResponseEntity.ok(savedPost);

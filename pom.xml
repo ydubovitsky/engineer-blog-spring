@@ -67,6 +67,12 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
+        <!--        GUAVA-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.0.1-jre</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>

@@ -58,8 +58,7 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
-                //FIXME?
-                .setExpiration(new java.sql.Date(System.currentTimeMillis() + LocalDate.now().plusWeeks(4).toEpochDay()))
+                .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(4)))
                 .signWith(Keys.hmacShaKeyFor(key.getBytes()))
                 .compact();
 

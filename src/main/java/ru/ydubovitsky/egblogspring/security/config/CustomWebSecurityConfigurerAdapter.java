@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.ydubovitsky.egblogspring.security.filter.JwtUsernameAndPasswordAuthFilter;
+import ru.ydubovitsky.egblogspring.security.filter.JwtVerifierFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +31,10 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager()))
+                .addFilterAfter(new JwtVerifierFilter(), JwtUsernameAndPasswordAuthFilter.class)
                 .authorizeRequests()
-                .antMatchers("/api/post/add").permitAll();
+//                .antMatchers("/api/post/add").permitAll()
+                .anyRequest()
+                .authenticated();
     }
 }
