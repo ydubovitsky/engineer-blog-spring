@@ -23,7 +23,7 @@ public class Role {
     @ManyToOne
     private User user;
 
-    @OneToMany(mappedBy = "role", orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "role", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Permission> permissionList;
 
 }
