@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ru.y-dubovitsky</groupId>
-    <artifactId>eg-blog-spring</artifactId>
+    <artifactId>engineer-blog-spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>eg-blog-spring</name>
-    <description>Spring Boot Project</description>
+    <name>engineer-blog-spring</name>
+    <description>Backend for my engineer blog</description>
     <properties>
         <java.version>11</java.version>
     </properties>
