@@ -1,16 +1,13 @@
 package ru.ydubovitsky.egblogspring.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="post_table")
 public class Post {
 
     @Id
@@ -19,7 +16,7 @@ public class Post {
 
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    @ManyToOne
+    private AppUser appUser;
 
 }

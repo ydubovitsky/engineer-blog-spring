@@ -5,18 +5,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.ydubovitsky.egblogspring.service.AppUserService;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AppUserService appUserService;
 
-    public CustomUserDetailsService(@Qualifier("mock") AppUserService appUserService) {
+    public UserDetailsServiceImpl(@Qualifier("mock") AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return appUserService.loadUserByUsername(username);
+        return appUserService.loadAppUser(username);
     }
 }
