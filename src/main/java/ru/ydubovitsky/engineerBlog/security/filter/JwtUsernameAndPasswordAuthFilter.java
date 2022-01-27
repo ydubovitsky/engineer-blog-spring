@@ -3,11 +3,14 @@ package ru.ydubovitsky.engineerBlog.security.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.ydubovitsky.engineerBlog.security.request.AuthResponse;
 import ru.ydubovitsky.engineerBlog.security.request.UsernameAndPasswordAuthRequest;
 
 import javax.servlet.FilterChain;
@@ -62,6 +65,16 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .signWith(Keys.hmacShaKeyFor(key.getBytes()))
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader("Authorization", "Bearer " + token); //TODO Убрать это?
+        //! Возвращаем еще токен и в теле ответа
+        response.resetBuffer();
+        response.setStatus(HttpStatus.OK.value());
+        response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+        response.getOutputStream().print(
+                new ObjectMapper().writeValueAsString(
+                        new AuthResponse("Bearer " + token, authResult.getName())
+                )
+        );
+        response.flushBuffer();
     }
 }
