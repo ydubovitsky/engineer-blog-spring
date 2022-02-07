@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
 import ru.ydubovitsky.engineerBlog.entity.Post;
+import ru.ydubovitsky.engineerBlog.requests.response.PagingPostWithAllPostCount;
 import ru.ydubovitsky.engineerBlog.service.PostService;
 
 import java.io.IOException;
@@ -21,11 +22,12 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<List<Post>> getPostsByPage(
+    public ResponseEntity<PagingPostWithAllPostCount> getPostsByPage(
             @RequestParam(name = "page") Integer page
     ) {
-        List<Post> postOfSize = postService.getPostOfSize(page);
-        return ResponseEntity.ok(postOfSize);
+        PagingPostWithAllPostCount pagingPostWithAllPostCount
+                = new PagingPostWithAllPostCount(postService.getPostOfSize(page), postService.getAllPostsCount());
+        return ResponseEntity.ok(pagingPostWithAllPostCount);
     }
 
     @PostMapping("/add")

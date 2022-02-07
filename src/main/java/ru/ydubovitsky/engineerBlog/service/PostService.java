@@ -54,4 +54,8 @@ public class PostService {
                 .getContent();
         return posts;
     }
+
+    public Integer getAllPostsCount() {
+        return postRepository.aCountOfPosts();
+    }
 }
