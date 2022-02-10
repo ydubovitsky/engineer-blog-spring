@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
@@ -31,7 +32,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    //    @PreAuthorize("hasAnyAuthority('UPDATE')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Post> saveImage(
             @RequestPart("newPost") String post,
             @RequestPart("files") MultipartFile[] images
@@ -44,14 +45,5 @@ public class PostController {
         return ResponseEntity.ok(savedPost);
     }
 
-//    private Image convertMultipartFileToImageEntity(MultipartFile file) {
-//        Image imageEntity = new Image();
-//        imageEntity.setName(file.getOriginalFilename());
-//        try {
-//            imageEntity.setByteImage(file.getBytes());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return imageEntity;
-//    }
+
 }

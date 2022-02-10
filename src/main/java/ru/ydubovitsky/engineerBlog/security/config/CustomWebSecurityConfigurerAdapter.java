@@ -21,6 +21,5 @@ public class CustomWebSecurityConfigurerAdapter extends WebSecurityConfigurerAda
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new JwtUsernameAndPasswordAuthFilter(authenticationManager()));
         http.addFilterAfter(new JwtVerifierFilter(), JwtUsernameAndPasswordAuthFilter.class);
-//        http.authorizeRequests().anyRequest().authenticated();
     }
 }

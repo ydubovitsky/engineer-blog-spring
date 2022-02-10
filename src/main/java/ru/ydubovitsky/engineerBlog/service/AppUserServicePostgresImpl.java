@@ -1,11 +1,13 @@
 package ru.ydubovitsky.engineerBlog.service;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.ydubovitsky.engineerBlog.entity.AppUser;
 import ru.ydubovitsky.engineerBlog.repository.AppUserRepository;
 
+@Slf4j
 @Service("postgres")
 @AllArgsConstructor
 public class AppUserServicePostgresImpl implements AppUserService {
@@ -19,8 +21,9 @@ public class AppUserServicePostgresImpl implements AppUserService {
 
     @Override
     public AppUser getById(Integer id) {
-        //FIXME Метод реализовать
-        return null;
+        AppUser appUser = appUserRepository.getById(id);
+        log.info(String.format("%s loaded", appUser.getUsername()));
+        return appUser;
     }
 
     @Override
