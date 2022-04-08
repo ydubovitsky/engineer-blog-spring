@@ -1,14 +1,14 @@
 package ru.ydubovitsky.engineerBlog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
+@Builder
 @Getter @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class SubPost {
 
@@ -25,13 +25,16 @@ public class SubPost {
     @ManyToOne
     @JsonIgnore
     private Post post;
+
     @Column(columnDefinition="TEXT")
     private String text;
+
     @Column(columnDefinition="TEXT")
     private String sourceCode;
 
-    @Lob
-    private byte[] subPostImage;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Image subPostImage;
+
     @Column(columnDefinition="TEXT")
     private String imageDescription;
 

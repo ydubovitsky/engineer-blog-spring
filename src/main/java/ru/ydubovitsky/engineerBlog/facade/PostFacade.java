@@ -1,6 +1,7 @@
 package ru.ydubovitsky.engineerBlog.facade;
 
-import ru.ydubovitsky.engineerBlog.dto.PostDto;
+import ru.ydubovitsky.engineerBlog.dto.request.PostDto;
+import ru.ydubovitsky.engineerBlog.entity.Image;
 import ru.ydubovitsky.engineerBlog.entity.Post;
 import ru.ydubovitsky.engineerBlog.entity.SubPost;
 
@@ -12,10 +13,9 @@ public class PostFacade {
     public static Post postDtoToPost(PostDto postDto, byte[] byteImage) {
         Post post = Post.builder()
                 .title(postDto.getTitle())
-                .date(postDto.getDate())
                 .text(postDto.getText())
                 .description(postDto.getDescription())
-                .postImage(byteImage) //! Attention!
+                .postImage(new Image(byteImage)) //! Attention!
                 .category(postDto.getCategory())
                 .author(postDto.getAuthor())
                 .subPosts(postDto.getSubPosts().stream()

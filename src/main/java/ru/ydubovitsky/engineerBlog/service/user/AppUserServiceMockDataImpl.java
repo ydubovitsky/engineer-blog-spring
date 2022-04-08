@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.service;
+package ru.ydubovitsky.engineerBlog.service.user;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.ydubovitsky.engineerBlog.entity.AppUser;
-import ru.ydubovitsky.engineerBlog.entity.Role;
+import ru.ydubovitsky.engineerBlog.entity.enums.Role;
 import ru.ydubovitsky.engineerBlog.repository.AppUserRepository;
+
+import java.util.Set;
 
 @Slf4j
 @Service("mock")
@@ -25,7 +27,8 @@ public class AppUserServiceMockDataImpl implements AppUserService {
                 passwordEncoder.encode("u"),
                 "mail@email.com",
                 null,
-                Role.ADMIN,
+                Set.of(Role.ADMIN, Role.SUPER_ADMIN, Role.USER),
+                null,
                 true,
                 true,
                 true,

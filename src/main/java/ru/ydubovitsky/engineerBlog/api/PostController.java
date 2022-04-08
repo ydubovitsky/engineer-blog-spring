@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.controller;
+package ru.ydubovitsky.engineerBlog.api;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -7,13 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.ydubovitsky.engineerBlog.dto.PostDto;
+import ru.ydubovitsky.engineerBlog.dto.request.PostDto;
 import ru.ydubovitsky.engineerBlog.entity.Post;
 import ru.ydubovitsky.engineerBlog.requests.response.PagingPostWithAllPostCount;
 import ru.ydubovitsky.engineerBlog.service.PostService;
 
 import java.io.IOException;
-import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -29,6 +28,13 @@ public class PostController {
         PagingPostWithAllPostCount pagingPostWithAllPostCount
                 = new PagingPostWithAllPostCount(postService.getPostOfSize(page), postService.getAllPostsCount());
         return ResponseEntity.ok(pagingPostWithAllPostCount);
+    }
+
+    @GetMapping(params = "id")
+    @ResponseBody
+    public ResponseEntity<Post> getPostById(@RequestParam(name = "id") Integer id) {
+        Post postById = postService.findPostById(id);
+        return ResponseEntity.ok(postById);
     }
 
     @PostMapping("/add")

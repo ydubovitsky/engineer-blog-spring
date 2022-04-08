@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.dto;
+package ru.ydubovitsky.engineerBlog.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

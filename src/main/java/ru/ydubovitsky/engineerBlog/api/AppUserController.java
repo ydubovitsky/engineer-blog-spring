@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.controller;
+package ru.ydubovitsky.engineerBlog.api;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.ydubovitsky.engineerBlog.entity.AppUser;
 import ru.ydubovitsky.engineerBlog.entity.Post;
-import ru.ydubovitsky.engineerBlog.service.AppUserService;
+import ru.ydubovitsky.engineerBlog.service.user.AppUserService;
 
 import java.util.Collection;
 import java.util.Set;

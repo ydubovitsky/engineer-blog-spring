@@ -1,16 +1,17 @@
 package ru.ydubovitsky.engineerBlog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 @AllArgsConstructor
-@Table(name = "comment_table")
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -18,5 +19,13 @@ public class Comment {
     private Long id;
 
     private String text;
+
+    @ManyToOne
+    private Post post;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime createdAt;
+
+    private Long userId;
 
 }

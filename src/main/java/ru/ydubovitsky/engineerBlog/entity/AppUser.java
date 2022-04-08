@@ -1,21 +1,22 @@
 package ru.ydubovitsky.engineerBlog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.ydubovitsky.engineerBlog.entity.enums.Role;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
-@Getter
-@Setter
+@Builder
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "appUser")
@@ -33,12 +34,26 @@ public class AppUser implements UserDetails {
     @Column(unique = true)
     private String email;
 
-    @OneToMany
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            mappedBy = "appUser",
+            orphanRemoval = true
+    )
     private Set<Post> postList;
 
-    @Enumerated(EnumType.STRING)
-    private Role role;
+    @ElementCollection(targetClass = Role.class)
+    @CollectionTable(
+            name = "appUser_role",
+            joinColumns = @JoinColumn(name = "appUser_id")
+    )
+    private Set<Role> roles;
 
+    @JsonFormat(pattern = "yyyy-mm-dd HH:mm:ss")
+    @Column(updatable = false)
+    private LocalDateTime createdDate;
+
+//!    Security fields
     private boolean isAccountNonExpired;
     private boolean isAccountNonLocked;
     private boolean isCredentialsNonExpired;
@@ -46,7 +61,7 @@ public class AppUser implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(this.role.name()));
+        return roles.stream().map(role -> new SimpleGrantedAuthority(role.name())).collect(Collectors.toSet());
     }
 
     @Override
@@ -68,4 +83,6 @@ public class AppUser implements UserDetails {
     public boolean isEnabled() {
         return this.isEnabled;
     }
+
+
 }

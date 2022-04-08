@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.service;
+package ru.ydubovitsky.engineerBlog.service.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.ydubovitsky.engineerBlog.entity.AppUser;

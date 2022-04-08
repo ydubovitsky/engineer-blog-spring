@@ -1,15 +1,19 @@
 package ru.ydubovitsky.engineerBlog.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+
 
 @Entity
-@Getter @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
+@Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
 
     @Id
@@ -18,40 +22,51 @@ public class Post {
 
     @Column(columnDefinition="TEXT")
     private String text;
+
     private String category;
+
     @Column(columnDefinition="TEXT")
     private String title;
-    private String date;
-    private String author;
-    @Column(columnDefinition="TEXT")
 
-    @Lob
-    private byte[] postImage;
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime createAt;
+
+    @JsonFormat(pattern = "yyyy-mm-dd")
+    private LocalDateTime updatedAt;
+
+    @Column(columnDefinition="TEXT")
+    private String author;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Image postImage;
+
     @Column(columnDefinition="TEXT")
     private String disclosure;
+
     @Column(columnDefinition="TEXT")
     private String description;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private AppUser appUser;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER,
+            mappedBy = "post",
+            orphanRemoval = true
+    )
+    private Set<Comment> comments;
 
     @OneToMany(fetch = FetchType.EAGER)
     private List<SubPost> subPosts;
 
-    @ManyToOne
-    private AppUser appUser;
+    @PrePersist
+    private void setCreatedAt() {
+        this.createAt = LocalDateTime.now();
+    }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", text='" + text + '\'' +
-                ", category='" + category + '\'' +
-                ", title='" + title + '\'' +
-                ", date='" + date + '\'' +
-                ", author='" + author + '\'' +
-                ", imageSource='" + postImage + '\'' +
-                ", disclosure='" + disclosure + '\'' +
-                ", description='" + description + '\'' +
-                ", subPosts=" + subPosts +
-                ", appUser=" + appUser +
-                '}';
+    @PreUpdate
+    private void updateUpdatedAt() {
+        this.updatedAt = LocalDateTime.now();
     }
 }
