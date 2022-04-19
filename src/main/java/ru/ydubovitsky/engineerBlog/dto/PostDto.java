@@ -1,11 +1,10 @@
-package ru.ydubovitsky.engineerBlog.dto.request;
+package ru.ydubovitsky.engineerBlog.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -18,6 +17,7 @@ public class PostDto {
     private String category;
     private String author;
     private String description;
+    private byte[] byteImage;
 
     private List<SubPostDto> subPosts;
 

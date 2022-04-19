@@ -1,4 +1,4 @@
-package ru.ydubovitsky.engineerBlog.dto.request;
+package ru.ydubovitsky.engineerBlog.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;

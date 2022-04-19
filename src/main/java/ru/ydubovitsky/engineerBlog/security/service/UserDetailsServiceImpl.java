@@ -12,7 +12,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AppUserService appUserService;
 
-    public UserDetailsServiceImpl(@Qualifier("mock") AppUserService appUserService) {
+    public UserDetailsServiceImpl(AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 

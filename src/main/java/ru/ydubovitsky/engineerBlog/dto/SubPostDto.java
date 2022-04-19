@@ -1,9 +1,10 @@
-package ru.ydubovitsky.engineerBlog.dto.request;
+package ru.ydubovitsky.engineerBlog.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter @Setter
 @AllArgsConstructor
@@ -13,5 +14,6 @@ public class SubPostDto {
     private String text;
     private String sourceCode;
     private String imageDescription;
+    private byte[] byteImage;
 
 }

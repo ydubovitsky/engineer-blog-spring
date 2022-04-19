@@ -2,6 +2,7 @@ package ru.ydubovitsky.engineerBlog.service.user;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import ru.ydubovitsky.engineerBlog.repository.AppUserRepository;
 import java.util.Set;
 
 @Slf4j
+@Primary
 @Service("mock")
 @AllArgsConstructor
 public class AppUserServiceMockDataImpl implements AppUserService {

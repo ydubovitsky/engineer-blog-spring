@@ -16,12 +16,6 @@ public class SubPost {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public SubPost(String text, String sourceCode, String imageDescription) {
-        this.text = text;
-        this.sourceCode = sourceCode;
-        this.imageDescription = imageDescription;
-    }
-
     @ManyToOne
     @JsonIgnore
     private Post post;
