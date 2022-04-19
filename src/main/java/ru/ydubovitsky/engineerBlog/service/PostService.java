@@ -74,4 +74,9 @@ public class PostService {
         log.info(String.format("Post with id: %s updated!", updatedPost.getId()));
         return updatedPost;
     }
+
+    public void deletePostById(Integer id) {
+        postRepository.deleteById(id);
+        log.info(String.format("Post with id: %s deleted", id));
+    }
 }
