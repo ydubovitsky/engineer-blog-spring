@@ -27,7 +27,7 @@ public class AppUserController {
 
     @GetMapping("/{username}/posts")
     public ResponseEntity<Collection<Post>> getUserPosts(@PathVariable(name = "username") String username) {
-        AppUser appUser = appUserService.getByUsername(username);
+        AppUser appUser = appUserService.getAppUserByName(username);
         Set<Post> postList = appUser.getPostList();
 
         return ResponseEntity.ok(postList);

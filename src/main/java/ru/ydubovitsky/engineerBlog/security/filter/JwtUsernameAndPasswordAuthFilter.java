@@ -10,11 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import ru.ydubovitsky.engineerBlog.security.request.AuthResponse;
+import ru.ydubovitsky.engineerBlog.dto.AppUserDto;
+import ru.ydubovitsky.engineerBlog.entity.AppUser;
 import ru.ydubovitsky.engineerBlog.security.request.UsernameAndPasswordAuthRequest;
+import ru.ydubovitsky.engineerBlog.service.user.AppUserService;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,10 +25,12 @@ import java.util.Date;
 public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
+    private final AppUserService appUserService;
     private final String key = "org.springframework.boot.devtools.restrt.classloader.RestartClassLoaderorg.springframework.boot.devtools.restart.classloader.RestartClassLoader";
 
-    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager) {
+    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager, AppUserService appUserService) {
         this.authenticationManager = authenticationManager;
+        this.appUserService = appUserService;
     }
 
     @Override
@@ -56,7 +59,7 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
             HttpServletResponse response,
             FilterChain chain,
             Authentication authResult
-    ) throws IOException, ServletException {
+    ) throws IOException {
         String token = Jwts.builder()
                 .setSubject(authResult.getName())
                 .claim("authorities", authResult.getAuthorities())
@@ -65,16 +68,27 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .signWith(Keys.hmacShaKeyFor(key.getBytes()))
                 .compact();
 
-        response.addHeader("Authorization", "Bearer " + token); //TODO Убрать это?
-        //! Возвращаем еще токен и в теле ответа
+        //TODO Вынести в отдельный метод?
         response.resetBuffer();
         response.setStatus(HttpStatus.OK.value());
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
-        response.getOutputStream().print(
-                new ObjectMapper().writeValueAsString(
-                        new AuthResponse("Bearer " + token, authResult.getName())
-                )
+        response.getWriter().print(
+                new ObjectMapper().writeValueAsString(getAuthResponse(authResult, "Bearer " + token))
         );
         response.flushBuffer();
+    }
+
+    private AppUserDto getAuthResponse(Authentication authResult, String jwttoken) {
+        AppUser appUser = appUserService.getAppUserByName(authResult.getName());
+
+        return AppUserDto.builder()
+                .jwttoken(jwttoken)
+                .username(appUser.getUsername())
+                .about(appUser.getAbout())
+                .contacts(appUser.getContacts())
+                .firstName(appUser.getFirstName())
+                .lastName(appUser.getLastName())
+                .roles(appUser.getRoles())
+                .build();
     }
 }

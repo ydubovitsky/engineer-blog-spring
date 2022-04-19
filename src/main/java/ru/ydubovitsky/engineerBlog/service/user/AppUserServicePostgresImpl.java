@@ -6,7 +6,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import ru.ydubovitsky.engineerBlog.entity.AppUser;
 import ru.ydubovitsky.engineerBlog.repository.AppUserRepository;
-import ru.ydubovitsky.engineerBlog.service.user.AppUserService;
 
 @Slf4j
 @Service("postgres")
@@ -16,19 +15,8 @@ public class AppUserServicePostgresImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
 
     @Override
-    public UserDetails loadAppUser(String username) {
+    public AppUser getAppUserByName(String username) {
         return appUserRepository.findByUsername(username);
     }
 
-    @Override
-    public AppUser getById(Integer id) {
-        AppUser appUser = appUserRepository.getById(id);
-        log.info(String.format("%s loaded", appUser.getUsername()));
-        return appUser;
-    }
-
-    @Override
-    public AppUser getByUsername(String username) {
-        return null;
-    }
 }
