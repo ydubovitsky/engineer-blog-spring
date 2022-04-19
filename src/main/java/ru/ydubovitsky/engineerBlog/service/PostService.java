@@ -59,16 +59,15 @@ public class PostService {
         return savedPost;
     }
 
-    @Transactional
-    public List<Post> getPostOfSize(Integer page) { //TODO Переименовать
+    public List<Post> getPostsPerPageWithSize(Integer page) {
         List<Post> posts = postRepository
                 .findAll(PageRequest.of(page, POST_BY_PAGE_COUNT))
                 .getContent();
         return posts;
     }
 
-    public Integer getAllPostsCount() {
-        return postRepository.aCountOfPosts();
+    public Integer getPostsCount() {
+        return postRepository.getPostsCount();
     }
 
     public Post findPostById(Integer id) {
