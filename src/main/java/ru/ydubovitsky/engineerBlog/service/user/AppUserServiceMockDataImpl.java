@@ -23,19 +23,16 @@ public class AppUserServiceMockDataImpl implements AppUserService {
 
     @Override
     public UserDetails loadAppUser(String username) {
-        AppUser appUser = new AppUser(
-                null,
-                "u",
-                passwordEncoder.encode("u"),
-                "mail@email.com",
-                null,
-                Set.of(Role.ADMIN, Role.SUPER_ADMIN, Role.USER),
-                null,
-                true,
-                true,
-                true,
-                true
-        );
+        AppUser appUser = AppUser.builder()
+                .username("u")
+                .password(passwordEncoder.encode("u"))
+                .roles(Set.of(Role.ADMIN, Role.SUPER_ADMIN, Role.USER))
+                .isEnabled(true)
+                .isCredentialsNonExpired(true)
+                .isAccountNonLocked(true)
+                .isAccountNonExpired(true)
+                .build();
+
         log.info(String.format("UserDetails with name: %s loaded", appUser.getUsername()));
         appUserRepository.save(appUser);
         return appUser;

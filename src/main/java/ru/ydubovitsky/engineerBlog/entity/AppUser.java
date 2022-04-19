@@ -31,8 +31,14 @@ public class AppUser implements UserDetails {
 
     private String password;
 
-    @Column(unique = true)
-    private String email;
+    private String firstName;
+
+    private String lastName;
+
+    private String about;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Contacts contacts;
 
     @OneToMany(
             cascade = CascadeType.ALL,
