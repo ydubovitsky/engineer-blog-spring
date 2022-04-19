@@ -1,6 +1,7 @@
 package ru.ydubovitsky.engineerBlog.api;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -49,6 +50,16 @@ public class PostController {
         PostDto postDto = PostRequestMapper.postRequestToPostDto(postRequest);
         Post savedPost = postService.addPost(postDto);
         return ResponseEntity.ok(savedPost);
+    }
+
+    @PostMapping("/update")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<?> updatePost(
+            @ModelAttribute PostRequest postRequest
+    ) {
+        PostDto postDto = PostRequestMapper.postRequestToPostDto(postRequest);
+        postService.updatePost(postDto);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 

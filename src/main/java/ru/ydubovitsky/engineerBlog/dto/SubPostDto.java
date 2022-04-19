@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @NoArgsConstructor
 public class SubPostDto {
 
+    private Long id;
     private String text;
     private String sourceCode;
     private String imageDescription;

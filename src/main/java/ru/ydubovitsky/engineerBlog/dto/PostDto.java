@@ -12,6 +12,7 @@ import java.util.List;
 @Getter @Setter
 public class PostDto {
 
+    private Integer id;
     private String title;
     private String text;
     private String category;
