@@ -14,4 +14,7 @@ public interface PostRepository extends PagingAndSortingRepository<Post, Integer
 
     Optional<List<Post>> findByTitleContainsIgnoreCase(String title);
 
+    @Query(value = "SELECT DISTINCT p.category FROM Post p LIMIT 10", nativeQuery = true)
+    Optional<List<String>> getCategories();
+
 }

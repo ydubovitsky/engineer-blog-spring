@@ -53,6 +53,14 @@ public class PostService {
         return posts;
     }
 
+    public List<String> getCategoriesListOfAllPosts() {
+        List<String> categoriesList = postRepository.getCategories().orElseThrow(
+                () -> new RuntimeException("Categories not found")
+        );
+        log.info(String.format("%s categories found", categoriesList.size()));
+        return categoriesList;
+    }
+
     public Integer getPostsCount() {
         return postRepository.getPostsCount();
     }

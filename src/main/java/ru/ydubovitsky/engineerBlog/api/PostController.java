@@ -76,4 +76,10 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @GetMapping(value = "/categories")
+    public ResponseEntity<List<String>> getCategoryList() {
+        List<String> categories = postService.getCategoriesListOfAllPosts();
+        return ResponseEntity.ok(categories);
+    }
+
 }
