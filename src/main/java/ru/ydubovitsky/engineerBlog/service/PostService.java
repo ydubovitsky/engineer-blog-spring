@@ -28,12 +28,22 @@ public class PostService {
     private final SubPostService subPostService;
 
     @Transactional
-    public Post addPost(PostDto postDto)  {
+    public Post addPost(PostDto postDto) {
         Post post = PostFacade.postDtoToPost(postDto);
         subPostService.saveSubPostList(post.getSubPosts());
         Post savedPost = postRepository.save(post);
         log.info(String.format("Post with name: %s - saved", savedPost.getTitle()));
         return savedPost;
+    }
+
+    //! Case ignores
+    @Transactional
+    public List<Post> searchPostsByTitle(String text) {
+        List<Post> posts = postRepository.findByTitleContainsIgnoreCase(text.toLowerCase()).orElseThrow(
+                () -> new RuntimeException(String.format("Posts with title: %s - not found", text))
+        );
+        log.info(String.format("%s posts with %s found", posts.size(), text));
+        return posts;
     }
 
     public List<Post> getPostsPerPageWithSize(Integer page) {

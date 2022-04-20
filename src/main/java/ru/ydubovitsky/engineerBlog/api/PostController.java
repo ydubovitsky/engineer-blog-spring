@@ -44,7 +44,7 @@ public class PostController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Post> addNewPost(
             @ModelAttribute PostRequest postRequest
-            ) {
+    ) {
         PostDto postDto = PostRequestMapper.postRequestToPostDto(postRequest);
         Post savedPost = postService.addPost(postDto);
         return ResponseEntity.ok(savedPost);
@@ -70,5 +70,10 @@ public class PostController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
+    @GetMapping(value = "/search", params = "title")
+    public ResponseEntity<List<Post>> findPostsByTitle(@RequestParam(name = "title") String title) {
+        List<Post> posts = postService.searchPostsByTitle(title);
+        return ResponseEntity.ok(posts);
+    }
 
 }
