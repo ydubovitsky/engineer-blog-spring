@@ -31,7 +31,9 @@ public class PostController {
 
     @GetMapping(params = "id")
     public ResponseEntity<Post> getPostById(@RequestParam(name = "id") Integer id) {
-        Post postById = postService.findPostById(id);
+        Post postById = postService.getPostById(id);
+        //! Если клиент запрашивает пост, то нам нужно увеличить и число просмотров!
+        postService.increasePostView(id);
         return ResponseEntity.ok(postById);
     }
 
@@ -80,6 +82,13 @@ public class PostController {
     public ResponseEntity<List<String>> getCategoryList() {
         List<String> categories = postService.getCategoriesListOfAllPosts();
         return ResponseEntity.ok(categories);
+    }
+
+    //!FIXME Не работает! Status 500
+    @PutMapping("/views/{id}")
+    public ResponseEntity<?> increasePostView(@PathVariable(value = "id") Integer id) {
+        postService.increasePostView(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
 }

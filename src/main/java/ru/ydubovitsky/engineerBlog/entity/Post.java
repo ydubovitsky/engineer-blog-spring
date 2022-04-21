@@ -25,6 +25,8 @@ public class Post {
 
     private String category;
 
+    private Integer views = 0;
+
     @Column(columnDefinition="TEXT")
     private String title;
 

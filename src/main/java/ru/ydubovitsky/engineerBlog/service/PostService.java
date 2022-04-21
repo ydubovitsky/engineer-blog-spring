@@ -65,7 +65,7 @@ public class PostService {
         return postRepository.getPostsCount();
     }
 
-    public Post findPostById(Integer id) {
+    public Post getPostById(Integer id) {
         return postRepository.findById(id).orElseThrow(
                 () -> new RuntimeException(String.format("Post with id: %s not found!", id))
         );
@@ -96,5 +96,14 @@ public class PostService {
     public void deletePostById(Integer id) {
         postRepository.deleteById(id);
         log.info(String.format("Post with id: %s deleted", id));
+    }
+
+    public void increasePostView(Integer postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new RuntimeException(String.format("Post with id %s not found for increasePostView!", postId)));
+
+        post.setViews(post.getViews() + 1);
+        postRepository.save(post);
+        log.info(String.format("Views of post with id: %s updated", postId));
     }
 }
