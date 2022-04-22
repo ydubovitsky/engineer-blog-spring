@@ -25,6 +25,7 @@ public class Post {
 
     private String category;
 
+    @Builder.Default
     private Integer views = 0;
 
     @Column(columnDefinition="TEXT")
@@ -50,6 +51,9 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
+
+    @Builder.Default
+    private Boolean isDeleted = false;
 
     @OneToMany(
             cascade = CascadeType.ALL,

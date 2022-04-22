@@ -32,8 +32,9 @@ public class PostController {
     @GetMapping(params = "id")
     public ResponseEntity<Post> getPostById(@RequestParam(name = "id") Integer id) {
         Post postById = postService.getPostById(id);
+
         //! Если клиент запрашивает пост, то нам нужно увеличить и число просмотров!
-        postService.increasePostView(id);
+        postService.increasePostView(postById);
         return ResponseEntity.ok(postById);
     }
 

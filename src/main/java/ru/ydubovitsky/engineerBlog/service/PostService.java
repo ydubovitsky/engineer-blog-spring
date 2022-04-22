@@ -7,13 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
 import ru.ydubovitsky.engineerBlog.entity.Post;
-import ru.ydubovitsky.engineerBlog.entity.SubPost;
 import ru.ydubovitsky.engineerBlog.facade.PostFacade;
 import ru.ydubovitsky.engineerBlog.repository.PostRepository;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -39,17 +36,19 @@ public class PostService {
     //! Case ignores
     @Transactional
     public List<Post> searchPostsByTitle(String text) {
-        List<Post> posts = postRepository.findByTitleContainsIgnoreCase(text.toLowerCase()).orElseThrow(
+        List<Post> posts = postRepository.findAllNotDeletedPostsByTitleContainsIgnoreCase(text).orElseThrow(
                 () -> new RuntimeException(String.format("Posts with title: %s - not found", text))
         );
         log.info(String.format("%s posts with %s found", posts.size(), text));
         return posts;
     }
 
+    @Transactional
     public List<Post> getPostsPerPageWithSize(Integer page) {
-        List<Post> posts = postRepository
-                .findAll(PageRequest.of(page, POST_BY_PAGE_COUNT))
+        List<Post> posts = postRepository.findAllNotDeletedPosts(PageRequest.of(page, POST_BY_PAGE_COUNT))
+                .orElseThrow(() -> new RuntimeException(String.format("Posts not found!")))
                 .getContent();
+
         return posts;
     }
 
@@ -65,10 +64,12 @@ public class PostService {
         return postRepository.getPostsCount();
     }
 
+    @Transactional
     public Post getPostById(Integer id) {
-        return postRepository.findById(id).orElseThrow(
-                () -> new RuntimeException(String.format("Post with id: %s not found!", id))
-        );
+        return postRepository.findNotDeletedPostById(id)
+                .orElseThrow(
+                        () -> new RuntimeException(String.format("Post with id: %s not found!", id))
+                );
     }
 
     //TODO Переписать метод, уж больно страшный
@@ -93,9 +94,13 @@ public class PostService {
         return updatedPost;
     }
 
+    //! Этот метод не удаляет посты, а помечает их как удаленные
     public void deletePostById(Integer id) {
-        postRepository.deleteById(id);
-        log.info(String.format("Post with id: %s deleted", id));
+        Post post = postRepository.findById(id).orElseThrow(
+                () -> new RuntimeException(String.format("Post with id: %s not found!", id)));
+        post.setIsDeleted(true);
+        postRepository.save(post);
+        log.info(String.format("Post with id: %s marked liked deleted", id));
     }
 
     public void increasePostView(Integer postId) {
@@ -105,5 +110,11 @@ public class PostService {
         post.setViews(post.getViews() + 1);
         postRepository.save(post);
         log.info(String.format("Views of post with id: %s updated", postId));
+    }
+
+    public void increasePostView(Post post) {
+        post.setViews(post.getViews() + 1);
+        postRepository.save(post);
+        log.info(String.format("Views of post with id: %s updated", post.getId()));
     }
 }
