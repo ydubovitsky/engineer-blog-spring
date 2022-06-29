@@ -44,7 +44,7 @@ public class PostController {
     }
 
     @PostMapping("/add")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<Post> addNewPost(
             @ModelAttribute PostRequest postRequest
     ) {
@@ -54,7 +54,7 @@ public class PostController {
     }
 
     @PostMapping("/update")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<?> updatePost(
             @ModelAttribute PostRequest postRequest
     ) {
@@ -65,7 +65,7 @@ public class PostController {
 
     @CrossOrigin
     @DeleteMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'SUPER_ADMIN')")
     public ResponseEntity<?> deletePost(
             @PathVariable Integer id
     ) {
