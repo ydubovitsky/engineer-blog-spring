@@ -49,6 +49,9 @@ public class Post {
     @Column(columnDefinition="TEXT")
     private String description;
 
+    @Column(columnDefinition="TEXT")
+    private String conclusion;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private AppUser appUser;
 

@@ -18,6 +18,7 @@ public class PostFacade {
                 .postImage(new Image(postDto.getByteImage())) //! Image, Attention!
                 .category(postDto.getCategory())
                 .author(postDto.getAuthor())
+                .conclusion(postDto.getConclusion())
                 .subPosts(postDto.getSubPosts().stream()
                         .filter(subPostDto -> Objects.nonNull(subPostDto))
                         .map(subPostDto -> SubPost.builder()
