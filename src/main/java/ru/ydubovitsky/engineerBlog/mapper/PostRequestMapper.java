@@ -3,12 +3,14 @@ package ru.ydubovitsky.engineerBlog.mapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
 import ru.ydubovitsky.engineerBlog.payload.request.PostRequest;
 
 import java.io.IOException;
 import java.util.stream.IntStream;
 
+@Slf4j
 public class PostRequestMapper {
 
     public static PostDto postRequestToPostDto(PostRequest postRequest) {
@@ -21,10 +23,12 @@ public class PostRequestMapper {
             //TODO Переделать маппер
             IntStream.range(0, postDto.getSubPosts().size())
                     .forEach(idx -> {
-                        try {
-                            postDto.getSubPosts().get(idx).setByteImage(postRequest.getFiles().get(idx + 1).getBytes());
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        if (postRequest.getFiles().size() > idx + 1) {
+                            try {
+                                postDto.getSubPosts().get(idx).setByteImage(postRequest.getFiles().get(idx + 1).getBytes());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
             return postDto;
@@ -34,5 +38,4 @@ public class PostRequestMapper {
             throw new RuntimeException(e);
         }
     }
-
 }
