@@ -2,10 +2,13 @@ services:
   postgres:
     container_name: engineerBlogPostgres
     image: postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      PGDATA: /data/engineerBlogPostgres
+#    environment:
+#      POSTGRES_USER: postgres
+#      POSTGRES_PASSWORD: password
+#      PGDATA: /data/engineerBlogPostgres
+#      POSTGRES_DB: engineerBlogPostgres
+    env_file:
+      - .env
     volumes:
       - postgres:/data/engineerBlogPostgres
     ports:
