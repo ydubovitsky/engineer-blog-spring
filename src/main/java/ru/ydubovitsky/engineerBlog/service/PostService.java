@@ -2,7 +2,9 @@ package ru.ydubovitsky.engineerBlog.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
@@ -10,14 +12,14 @@ import ru.ydubovitsky.engineerBlog.entity.Post;
 import ru.ydubovitsky.engineerBlog.facade.PostFacade;
 import ru.ydubovitsky.engineerBlog.repository.PostRepository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
 @AllArgsConstructor
 public class PostService {
-
-    private static final Integer POST_BY_PAGE_COUNT = 5;
 
     private final PostRepository postRepository;
 
@@ -44,12 +46,17 @@ public class PostService {
     }
 
     @Transactional
-    public List<Post> getPostsPerPageWithSize(Integer page) {
-        List<Post> posts = postRepository.findAllNotDeletedPosts(PageRequest.of(page, POST_BY_PAGE_COUNT))
-                .orElseThrow(() -> new RuntimeException(String.format("Posts not found!")))
+    public Map<String, Object> getPostsPerPageWithSize(Integer page, Integer size) {
+        Pageable paging = PageRequest.of(page - 1, size); //TODO Improve it!
+        Integer countOfPosts = postRepository.getPostsCount();
+        List<Post> posts = postRepository.findAllNotDeletedPosts(paging)
+                .orElseThrow(() -> new RuntimeException(String.format("Posts for page %s not found!", page)))
                 .getContent();
 
-        return posts;
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalPostsCount", countOfPosts);
+        response.put("posts", posts);
+        return response;
     }
 
     public List<String> getCategoriesListOfAllPosts() {

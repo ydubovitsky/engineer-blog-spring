@@ -12,6 +12,7 @@ import ru.ydubovitsky.engineerBlog.payload.request.PostRequest;
 import ru.ydubovitsky.engineerBlog.service.PostService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -22,11 +23,12 @@ public class PostController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<Post>> getPostsByPage(
-            @RequestParam(name = "page") Integer page
+    public ResponseEntity<Map<String, Object>> getPostsByPage(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size
     ) {
-        List<Post> pagingPosts = postService.getPostsPerPageWithSize(page);
-        return ResponseEntity.ok(pagingPosts);
+        Map<String, Object> postsPerPageWithSize = postService.getPostsPerPageWithSize(page, size);
+        return ResponseEntity.ok(postsPerPageWithSize);
     }
 
     @GetMapping(params = "id")
@@ -39,6 +41,7 @@ public class PostController {
     }
 
     @GetMapping("/count")
+    @CrossOrigin
     public ResponseEntity<Integer> getPostsCount() {
         return ResponseEntity.ok(postService.getPostsCount());
     }
