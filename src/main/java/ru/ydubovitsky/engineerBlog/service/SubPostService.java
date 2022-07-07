@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import ru.ydubovitsky.engineerBlog.dto.SubPostDto;
 import ru.ydubovitsky.engineerBlog.entity.Image;
 import ru.ydubovitsky.engineerBlog.entity.SubPost;
+import ru.ydubovitsky.engineerBlog.facade.SubPostFacade;
 import ru.ydubovitsky.engineerBlog.repository.SubPostRepository;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -41,7 +43,18 @@ public class SubPostService {
                 })
                 .collect(Collectors.toList());
 
-        return subPostRepository.saveAll(updatedSubPosts);
+        subPostRepository.saveAll(updatedSubPosts);
+
+        List<SubPost> collect = IntStream.range(updatedSubPosts.size(), newSubPosts.size())
+                .mapToObj(idx -> SubPostFacade.subPostDtoToSubPost(newSubPosts.get(idx)))
+                .collect(Collectors.toList());
+
+
+        List<SubPost> newList = Stream.concat(updatedSubPosts.stream(), collect.stream())
+                .collect(Collectors.toList());
+
+
+        return subPostRepository.saveAll(newList);
     }
 
 }

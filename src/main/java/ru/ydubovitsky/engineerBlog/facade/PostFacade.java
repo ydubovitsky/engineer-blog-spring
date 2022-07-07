@@ -21,12 +21,7 @@ public class PostFacade {
                 .conclusion(postDto.getConclusion())
                 .subPosts(postDto.getSubPosts().stream()
                         .filter(subPostDto -> Objects.nonNull(subPostDto))
-                        .map(subPostDto -> SubPost.builder()
-                                .subPostImage(new Image(subPostDto.getByteImage())) //! Image
-                                .text(subPostDto.getText())
-                                .imageDescription(subPostDto.getImageDescription())
-                                .sourceCode(subPostDto.getSourceCode())
-                                .build())
+                        .map(subPostDto -> SubPostFacade.subPostDtoToSubPost(subPostDto))
                         .collect(Collectors.toList())
                 ).build();
 

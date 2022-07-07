@@ -93,6 +93,7 @@ public class PostService {
         postForUpdate.setCategory(newPost.getCategory());
         postForUpdate.setAuthor(newPost.getAuthor());
         postForUpdate.setTitle(newPost.getTitle());
+        postForUpdate.setSubPosts(newPost.getSubPosts());
 
         subPostService.updateSubPostList(postForUpdate.getSubPosts(), postDto.getSubPosts());
 
