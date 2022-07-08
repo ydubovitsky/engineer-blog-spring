@@ -106,6 +106,7 @@ public class PostService {
     public void deletePostById(Integer id) {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new RuntimeException(String.format("Post with id: %s not found!", id)));
+        if(post.getIsDeleted()) throw new RuntimeException(String.format("Post with id: %s already marked as deleted", id));
         post.setIsDeleted(true);
         postRepository.save(post);
         log.info(String.format("Post with id: %s marked liked deleted", id));
