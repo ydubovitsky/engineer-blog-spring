@@ -15,6 +15,7 @@
     <description>Backend for my engineer blog</description>
     <properties>
         <java.version>11</java.version>
+        <skipTests>true</skipTests>
     </properties>
     <dependencies>
         <dependency>
@@ -88,17 +89,28 @@
     </dependencies>
 
     <build>
+        <finalName>engineer-blog-spring</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <!--					I don`t know why, but created path -> target/>ydubovitsky/dining-room-spring.jar-->
+                    <imageName>ydubovitsky/engineer-blog-spring</imageName>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M6</version>
+                <configuration>
+                    <skipTests>${skipTests}</skipTests>
                 </configuration>
             </plugin>
         </plugins>
