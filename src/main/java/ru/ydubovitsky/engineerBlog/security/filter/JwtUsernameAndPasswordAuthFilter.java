@@ -10,6 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import ru.ydubovitsky.engineerBlog.config.VariablesConfig;
 import ru.ydubovitsky.engineerBlog.security.request.AuthResponse;
 import ru.ydubovitsky.engineerBlog.security.request.UsernameAndPasswordAuthRequest;
 
@@ -24,10 +25,11 @@ import java.util.Date;
 public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
-    private final String key = "org.springframework.boot.devtools.restrt.classloader.RestartClassLoaderorg.springframework.boot.devtools.restart.classloader.RestartClassLoader";
+    private final VariablesConfig variablesConfig;
 
-    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager) {
+    public JwtUsernameAndPasswordAuthFilter(AuthenticationManager authenticationManager, VariablesConfig variablesConfig) {
         this.authenticationManager = authenticationManager;
+        this.variablesConfig = variablesConfig;
     }
 
     @Override
@@ -62,7 +64,7 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
                 .claim("authorities", authResult.getAuthorities())
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(4)))
-                .signWith(Keys.hmacShaKeyFor(key.getBytes()))
+                .signWith(Keys.hmacShaKeyFor(variablesConfig.getSecurityKey().getBytes()))
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token); //TODO Убрать это?
@@ -72,7 +74,7 @@ public class JwtUsernameAndPasswordAuthFilter extends UsernamePasswordAuthentica
         response.setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
         response.getOutputStream().print(
                 new ObjectMapper().writeValueAsString(
-                        new AuthResponse("Bearer " + token, authResult.getName())
+                        new AuthResponse(variablesConfig.getTokenPrefix() + token, authResult.getName())
                 )
         );
         response.flushBuffer();

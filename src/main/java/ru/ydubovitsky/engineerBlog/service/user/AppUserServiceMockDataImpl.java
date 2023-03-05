@@ -46,6 +46,7 @@ public class AppUserServiceMockDataImpl implements AppUserService {
 
     @Override
     public AppUser getByUsername(String username) {
-        return appUserRepository.findByUsername(username);
+        return appUserRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException(String.format("User with name - %s not found", username)));
     }
 }
