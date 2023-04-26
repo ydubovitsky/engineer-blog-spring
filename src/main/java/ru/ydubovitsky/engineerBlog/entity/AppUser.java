@@ -48,7 +48,7 @@ public class AppUser implements UserDetails {
     )
     private Set<Post> postList;
 
-    @ElementCollection(targetClass = Role.class)
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(
             name = "appUser_role",
             joinColumns = @JoinColumn(name = "appUser_id")

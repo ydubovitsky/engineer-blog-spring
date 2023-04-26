@@ -1,5 +1,6 @@
 package ru.ydubovitsky.engineerBlog.security.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,7 +12,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AppUserService appUserService;
 
-    public UserDetailsServiceImpl(AppUserService appUserService) {
+    public UserDetailsServiceImpl(@Qualifier("postgres") AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 

@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import ru.ydubovitsky.engineerBlog.config.VariablesConfig;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -22,7 +23,12 @@ import java.util.stream.Collectors;
 
 public class JwtVerifierFilter extends OncePerRequestFilter {
 
-    private final String key = "org.springframework.boot.devtools.restrt.classloader.RestartClassLoaderorg.springframework.boot.devtools.restart.classloader.RestartClassLoader";
+    private final VariablesConfig variablesConfig;
+
+
+    public JwtVerifierFilter(VariablesConfig variablesConfig) {
+        this.variablesConfig = variablesConfig;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -32,7 +38,7 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if (Strings.isNullOrEmpty(authHeader) || !authHeader.startsWith("Bearer ")) {
+        if (Strings.isNullOrEmpty(authHeader) || !authHeader.startsWith(variablesConfig.getTokenPrefix())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -41,7 +47,7 @@ public class JwtVerifierFilter extends OncePerRequestFilter {
 
         try {
             Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(key.getBytes())
+                    .setSigningKey(variablesConfig.getSecurityKey().getBytes())
                     .parseClaimsJws(token);
 
             Claims body = claimsJws.getBody();
