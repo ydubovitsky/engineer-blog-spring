@@ -20,7 +20,4 @@ public class PostDto {
     private String description;
     private String conclusion;
     private byte[] byteImage;
-
-    private List<SubPostDto> subPosts;
-
 }

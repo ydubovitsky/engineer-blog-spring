@@ -10,6 +10,6 @@ import java.util.List;
 public class PostRequest {
 
     String newPost;
-    List<MultipartFile> files;
+    MultipartFile file;
 
 }

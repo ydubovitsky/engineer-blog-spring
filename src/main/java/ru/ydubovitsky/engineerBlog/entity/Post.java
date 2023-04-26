@@ -66,9 +66,6 @@ public class Post {
     )
     private Set<Comment> comments;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<SubPost> subPosts;
-
     @PrePersist
     private void setCreatedAt() {
         this.createAt = LocalDateTime.now();

@@ -18,10 +18,6 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    public Image(byte[] byteImage) {
-        this.byteImage = byteImage;
-    }
-
     @Column(columnDefinition = "text")
     private String name;
 
@@ -34,11 +30,7 @@ public class Image {
     @JsonIgnore
     private Integer postId;
 
-    @JsonIgnore
-    private Long subPostId;
-
-    public Image(String name, byte[] byteImage) {
-        this.name = name;
+    public Image(byte[] byteImage) {
         this.byteImage = byteImage;
     }
 }

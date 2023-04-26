@@ -3,10 +3,6 @@ package ru.ydubovitsky.engineerBlog.facade;
 import ru.ydubovitsky.engineerBlog.dto.PostDto;
 import ru.ydubovitsky.engineerBlog.entity.Image;
 import ru.ydubovitsky.engineerBlog.entity.Post;
-import ru.ydubovitsky.engineerBlog.entity.SubPost;
-
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class PostFacade {
 
@@ -19,11 +15,7 @@ public class PostFacade {
                 .category(postDto.getCategory())
                 .author(postDto.getAuthor())
                 .conclusion(postDto.getConclusion())
-                .subPosts(postDto.getSubPosts().stream()
-                        .filter(subPostDto -> Objects.nonNull(subPostDto))
-                        .map(subPostDto -> SubPostFacade.subPostDtoToSubPost(subPostDto))
-                        .collect(Collectors.toList())
-                ).build();
+                .build();
 
         return post;
     }

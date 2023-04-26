@@ -15,6 +15,7 @@ import ru.ydubovitsky.engineerBlog.repository.PostRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -23,13 +24,9 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    //* Other services
-    private final SubPostService subPostService;
-
     @Transactional
     public Post addPost(PostDto postDto) {
         Post post = PostFacade.postDtoToPost(postDto);
-        subPostService.saveSubPostList(post.getSubPosts());
         Post savedPost = postRepository.save(post);
         log.info(String.format("Post with name: %s - saved", savedPost.getTitle()));
         return savedPost;
@@ -86,16 +83,15 @@ public class PostService {
 
         Post newPost = PostFacade.postDtoToPost(postDto);
 
-        postForUpdate.setPostImage(newPost.getPostImage());
+        if(Objects.nonNull(newPost.getPostImage().getByteImage())) {
+            postForUpdate.setPostImage(newPost.getPostImage());
+        }
         postForUpdate.setText(newPost.getText());
         postForUpdate.setDisclosure(newPost.getDisclosure());
         postForUpdate.setDescription(newPost.getDescription());
         postForUpdate.setCategory(newPost.getCategory());
         postForUpdate.setAuthor(newPost.getAuthor());
         postForUpdate.setTitle(newPost.getTitle());
-        postForUpdate.setSubPosts(newPost.getSubPosts());
-
-        subPostService.updateSubPostList(postForUpdate.getSubPosts(), postDto.getSubPosts());
 
         Post updatedPost = postRepository.save(postForUpdate);
         log.info(String.format("Post with id: %s updated!", updatedPost.getId()));
