@@ -1,41 +1,62 @@
+# How to use it?
+# docker compose -f docker-compose-prod.yml up
+
+version: '3'
 services:
-  postgres:
-    container_name: engineerBlogPostgres
-    image: postgres
-#    environment:
-#      POSTGRES_USER: postgres
-#      POSTGRES_PASSWORD: password
-#      PGDATA: /data/engineerBlogPostgres
-#      POSTGRES_DB: engineerBlogPostgres
-    env_file:
-      - .env
-    volumes:
-      - postgres:/data/engineerBlogPostgres
+  # You can rename this service special for docker-hub like: ydubovitsky/engineer-blog-spring
+  engineer-blog-spring:
+    build:
+      dockerfile: ./docker/production/Dockerfile
+    environment:
+      PROFILE_ACTIVE: postgres
+      ADMIN_NAME: admin
+      ADMIN_PASSWORD: password
+      POSTGRES_URL: jdbc:postgresql://postgres_container:5432/postgres
+      POSTGRES_USERNAME: postgres
+      POSTGRES_PASSWORD: changeme
+      POSTGRES_DDL_AUTO: create
+    depends_on:
+      - engineer-blog-db
+      - engineer-blog-pgadmin
+    networks:
+      - postgres
     ports:
-      - "5435:5432"
+      - "8080:8080"
+
+  engineer-blog-db:
+    image: postgres:alpine3.17
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
     networks:
       - postgres
     restart: unless-stopped
 
-#  pgadmin:
-#    container_name: engineerBlogPgadmin
-#    image: dpage/pgadmin4
-#    environment:
-#      PGADMIN_DEFAULT_EMAIL: admin@admin.com
-#      PGADMIN_DEFAULT_PASSWORD: root
-#      PGADMIN_CONFIG_SERVER_MODE: 'False'
-#    volumes:
-#      - pgadmin:/var/lib/engineerBlogPgadmin
-#    ports:
-#      - "5050:80"
-#    networks:
-#      - postgres
-#    restart: unless-stopped
+  engineer-blog-pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - engineer-blog-pgadmin:/var/lib/pgadmin
+    depends_on:
+      - engineer-blog-db
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    restart: unless-stopped
 
 networks:
   postgres:
     driver: bridge
 
 volumes:
-  postgres:
-  pgadmin:
+  engineer-blog-db:
+  engineer-blog-pgadmin:
