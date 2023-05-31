@@ -1,9 +1,7 @@
 package ru.ydubovitsky.engineerBlog.service;
 
-import org.hibernate.ObjectNotFoundException;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import ru.ydubovitsky.engineerBlog.dto.CommentDto;
+import ru.ydubovitsky.engineerBlog.dto.CommentDTO;
 import ru.ydubovitsky.engineerBlog.entity.Comment;
 import ru.ydubovitsky.engineerBlog.facade.CommentFacade;
 import ru.ydubovitsky.engineerBlog.repository.CommentRepository;
@@ -20,7 +18,7 @@ public class CommentService {
         this.postRepository = postRepository;
     }
 
-    public Comment createComment(Integer postId, CommentDto commentDto) {
+    public Comment createComment(Integer postId, CommentDTO commentDto) {
         Comment comment = CommentFacade.commentDtoToComment(commentDto);
         return postRepository.findById(postId).map(post -> {
             comment.setPost(post);
@@ -32,7 +30,7 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    public Comment updateComment(Long commentId, CommentDto commentDto) {
+    public Comment updateComment(Long commentId, CommentDTO commentDto) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new RuntimeException("Not found comment with id = " + commentId));
 

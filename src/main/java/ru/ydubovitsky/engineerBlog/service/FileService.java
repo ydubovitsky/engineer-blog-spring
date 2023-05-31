@@ -20,7 +20,9 @@ public class FileService {
         try {
             String realType = getRealFileType(multipartFile);
             if (isImage(realType)) {
-                return saveMultipartFileLocally(multipartFile);
+                String savedImage = saveMultipartFileLocally(multipartFile);
+                log.info(String.format("Image with name %s saved", multipartFile.getOriginalFilename()));
+                return savedImage;
             } else {
                 throw new RuntimeException("Not an image!");
             }

@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommentDto {
+public class CommentDTO {
 
     public String name;
     public String message;

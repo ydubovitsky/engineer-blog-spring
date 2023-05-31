@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 
@@ -26,7 +27,7 @@ public class Post {
     private String category;
 
     @Builder.Default
-    private Integer views = 0;
+    private Integer views = new Random().nextInt(100) + 1; //!TODO Improve me
 
     @Column(columnDefinition="TEXT")
     private String title;
@@ -40,8 +41,7 @@ public class Post {
     @Column(columnDefinition="TEXT")
     private String author;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    private Image postImage;
+    private String postImageSrc;
 
     @Column(columnDefinition="TEXT")
     private String disclosure;

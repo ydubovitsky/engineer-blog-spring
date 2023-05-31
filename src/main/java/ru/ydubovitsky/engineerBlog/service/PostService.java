@@ -2,12 +2,12 @@ package ru.ydubovitsky.engineerBlog.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.ydubovitsky.engineerBlog.dto.PostDto;
+import ru.ydubovitsky.engineerBlog.dto.PostAddRequestDTO;
+import ru.ydubovitsky.engineerBlog.dto.PostUpdateRequestDTO;
 import ru.ydubovitsky.engineerBlog.entity.Post;
 import ru.ydubovitsky.engineerBlog.facade.PostFacade;
 import ru.ydubovitsky.engineerBlog.repository.PostRepository;
@@ -20,20 +20,19 @@ import java.util.Objects;
 @Slf4j
 @Service
 @AllArgsConstructor
+@Transactional
 public class PostService {
 
     private final PostRepository postRepository;
 
-    @Transactional
-    public Post addPost(PostDto postDto) {
-        Post post = PostFacade.postDtoToPost(postDto);
+    public Post addPost(PostAddRequestDTO postDto) {
+        Post post = PostFacade.postAddRequestDTOtoPost(postDto);
         Post savedPost = postRepository.save(post);
         log.info(String.format("Post with name: %s - saved", savedPost.getTitle()));
         return savedPost;
     }
 
     //! Case ignores
-    @Transactional
     public List<Post> searchPostsByTitle(String text) {
         List<Post> posts = postRepository.findAllNotDeletedPostsByTitleContainsIgnoreCase(text).orElseThrow(
                 () -> new RuntimeException(String.format("Posts with title: %s - not found", text))
@@ -42,7 +41,6 @@ public class PostService {
         return posts;
     }
 
-    @Transactional
     public Map<String, Object> getPostsPerPageWithSize(Integer page, Integer size) {
         Pageable paging = PageRequest.of(page - 1, size); //TODO Improve it!
         Integer countOfPosts = postRepository.getPostsCount();
@@ -68,7 +66,6 @@ public class PostService {
         return postRepository.getPostsCount();
     }
 
-    @Transactional
     public Post getPostById(Integer id) {
         return postRepository.findNotDeletedPostById(id)
                 .orElseThrow(
@@ -77,14 +74,14 @@ public class PostService {
     }
 
     //TODO Переписать метод, уж больно страшный
-    public Post updatePost(PostDto postDto) {
+    public Post updatePost(PostUpdateRequestDTO postDto) {
         Post postForUpdate = postRepository.findById(postDto.getId()).orElseThrow(
                 () -> new RuntimeException(String.format("Post with id %s not found for update!", postDto.getId())));
 
-        Post newPost = PostFacade.postDtoToPost(postDto);
+        Post newPost = PostFacade.postUpdateRequestDTOtoPost(postDto);
 
-        if(Objects.nonNull(newPost.getPostImage().getByteImage())) {
-            postForUpdate.setPostImage(newPost.getPostImage());
+        if(Objects.nonNull(newPost.getPostImageSrc())) {
+            postForUpdate.setPostImageSrc(newPost.getPostImageSrc());
         }
         postForUpdate.setText(newPost.getText());
         postForUpdate.setDisclosure(newPost.getDisclosure());

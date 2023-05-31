@@ -1,11 +1,11 @@
-package ru.ydubovitsky.engineerBlog.dto.response;
+package ru.ydubovitsky.engineerBlog.dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class FeedbackResponseDto {
+public class FeedbackResponseDTO {
 
     private String name;
     private String message;

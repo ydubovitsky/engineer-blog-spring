@@ -1,12 +1,12 @@
 package ru.ydubovitsky.engineerBlog.facade;
 
-import ru.ydubovitsky.engineerBlog.dto.request.FeedbackRequestDto;
-import ru.ydubovitsky.engineerBlog.dto.response.FeedbackResponseDto;
+import ru.ydubovitsky.engineerBlog.dto.FeedbackRequestDTO;
+import ru.ydubovitsky.engineerBlog.dto.FeedbackResponseDTO;
 import ru.ydubovitsky.engineerBlog.entity.Feedback;
 
 public class FeedbackFacade {
 
-    public static Feedback feedbackRequestDtoToFeedback(FeedbackRequestDto feedbackRequestDto) {
+    public static Feedback feedbackRequestDtoToFeedback(FeedbackRequestDTO feedbackRequestDto) {
         return Feedback.builder()
                 .name(feedbackRequestDto.getName())
                 .message(feedbackRequestDto.getMessage())
@@ -14,8 +14,8 @@ public class FeedbackFacade {
                 .build();
     }
 
-    public static FeedbackResponseDto feedbackToFeedbackResponseDto(Feedback feedback) {
-        return FeedbackResponseDto.builder()
+    public static FeedbackResponseDTO feedbackToFeedbackResponseDto(Feedback feedback) {
+        return FeedbackResponseDTO.builder()
                 .name(feedback.getName())
                 .message(feedback.getMessage())
                 .email(feedback.getEmail())

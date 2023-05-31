@@ -21,7 +21,7 @@ public class AppUserController {
 
     private final AppUserService appUserService;
 
-    public AppUserController(@Qualifier("mock") AppUserService appUserService) {
+    public AppUserController(@Qualifier("postgres") AppUserService appUserService) {
         this.appUserService = appUserService;
     }
 

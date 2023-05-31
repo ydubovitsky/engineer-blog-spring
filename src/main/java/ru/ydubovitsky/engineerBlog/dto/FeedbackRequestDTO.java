@@ -1,9 +1,9 @@
-package ru.ydubovitsky.engineerBlog.dto.request;
+package ru.ydubovitsky.engineerBlog.dto;
 
 import lombok.*;
 
 @Data
-public class FeedbackRequestDto {
+public class FeedbackRequestDTO {
 
     private String name;
     private String email;

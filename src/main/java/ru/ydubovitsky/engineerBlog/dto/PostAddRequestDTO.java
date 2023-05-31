@@ -1,23 +1,19 @@
 package ru.ydubovitsky.engineerBlog.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter @Setter
-public class PostDto {
+@Builder
+public class PostAddRequestDTO {
 
-    private Integer id;
     private String title;
+    private String postImageSrc;
     private String text;
     private String category;
     private String author;
     private String description;
     private String conclusion;
-    private byte[] byteImage;
+
 }
