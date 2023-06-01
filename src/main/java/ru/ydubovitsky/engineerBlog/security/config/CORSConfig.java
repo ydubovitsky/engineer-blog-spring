@@ -16,6 +16,7 @@ public class CORSConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("PUT", "DELETE", "GET", "POST")
+                        //!TODO Вынести в переменные окружения
                         .allowedOrigins("http://localhost:3000", "http://ydubovitsky.ru", "https://ydubovitsky.ru");
             }
         };
