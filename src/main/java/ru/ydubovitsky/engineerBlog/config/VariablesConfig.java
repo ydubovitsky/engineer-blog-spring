@@ -23,4 +23,7 @@ public class VariablesConfig {
     @Value("${application.admin.password}")
     private String initAdminPassword;
 
+    @Value("${application.cors.allowedOriginsArray}")
+    private String allowedOriginsArray;
+
 }

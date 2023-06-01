@@ -1,13 +1,18 @@
 package ru.ydubovitsky.engineerBlog.security.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import ru.ydubovitsky.engineerBlog.config.VariablesConfig;
 
 @Configuration
+@RequiredArgsConstructor
 public class CORSConfig {
+
+    private final VariablesConfig variablesConfig;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
@@ -15,9 +20,8 @@ public class CORSConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("PUT", "DELETE", "GET", "POST")
-                        //!TODO Вынести в переменные окружения
-                        .allowedOrigins("http://localhost:3000", "http://ydubovitsky.ru", "https://ydubovitsky.ru");
+                        .allowedMethods("*")
+                        .allowedOrigins(variablesConfig.getAllowedOriginsArray().split(","));
             }
         };
     }
