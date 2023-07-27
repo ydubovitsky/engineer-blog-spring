@@ -89,6 +89,7 @@ public class PostService {
         postForUpdate.setCategory(newPost.getCategory());
         postForUpdate.setAuthor(newPost.getAuthor());
         postForUpdate.setTitle(newPost.getTitle());
+        postForUpdate.setConclusion(newPost.getConclusion());
 
         Post updatedPost = postRepository.save(postForUpdate);
         log.info(String.format("Post with id: %s updated!", updatedPost.getId()));
