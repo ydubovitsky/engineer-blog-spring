@@ -26,4 +26,15 @@ public class VariablesConfig {
     @Value("${application.cors.allowedOriginsArray}")
     private String allowedOriginsArray;
 
+    @Value("${application.cors.allowed-methods}")
+    private String allowedMethods;
+
+    @Value("${application.cors.max-age}")
+    private Integer maxAge;
+
+    @Value("${application.cors.allowed-headers}")
+    private String allowedHeaders;
+
+    @Value("${application.cors.exposed-headers}")
+    private String exposedHeaders;
 }

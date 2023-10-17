@@ -16,13 +16,16 @@ public class CORSConfig {
     private final VariablesConfig variablesConfig;
 
     @Bean
-    public WebMvcConfigurer corsConfigurer() {
+    public WebMvcConfigurer corsMappingConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE")
-                        .allowedOrigins(variablesConfig.getAllowedOriginsArray().split(","));
+                        .allowedOrigins(variablesConfig.getAllowedOriginsArray())
+                        .allowedMethods(variablesConfig.getAllowedMethods())
+                        .maxAge(variablesConfig.getMaxAge())
+                        .allowedHeaders(variablesConfig.getAllowedHeaders())
+                        .exposedHeaders(variablesConfig.getAllowedHeaders());
             }
         };
     }
