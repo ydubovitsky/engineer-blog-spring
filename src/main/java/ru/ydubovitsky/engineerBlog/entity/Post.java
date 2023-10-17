@@ -32,10 +32,10 @@ public class Post {
     @Column(columnDefinition="TEXT")
     private String title;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime createAt;
 
-    @JsonFormat(pattern = "yyyy-mm-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime updatedAt;
 
     @Column(columnDefinition="TEXT")
