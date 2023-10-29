@@ -11,21 +11,19 @@ import ru.ydubovitsky.engineerBlog.config.VariablesConfig;
 @Slf4j
 @Configuration
 @RequiredArgsConstructor
-public class CORSConfig {
+public class CORSConfig implements WebMvcConfigurer {
 
     private final VariablesConfig variablesConfig;
 
     @Bean
-    public WebMvcConfigurer corsMappingConfigurer() {
+    public WebMvcConfigurer corsConfigurer() {
+        log.info(String.format("CORS AllowedOrigins %s", variablesConfig.getAllowedOriginsArray()));
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(variablesConfig.getAllowedOriginsArray())
-                        .allowedMethods(variablesConfig.getAllowedMethods())
-                        .maxAge(variablesConfig.getMaxAge())
-                        .allowedHeaders(variablesConfig.getAllowedHeaders())
-                        .exposedHeaders(variablesConfig.getAllowedHeaders());
+                        .allowedMethods("*");
             }
         };
     }

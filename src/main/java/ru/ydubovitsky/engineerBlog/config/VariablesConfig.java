@@ -1,10 +1,12 @@
 package ru.ydubovitsky.engineerBlog.config;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import ru.ydubovitsky.engineerBlog.utils.ApplicationVariablesUtils;
 
 @NoArgsConstructor
 @Getter @Setter
@@ -23,18 +25,11 @@ public class VariablesConfig {
     @Value("${application.admin.password}")
     private String initAdminPassword;
 
+    @Getter(AccessLevel.NONE)
     @Value("${application.cors.allowedOriginsArray}")
     private String allowedOriginsArray;
 
-    @Value("${application.cors.allowed-methods}")
-    private String allowedMethods;
-
-    @Value("${application.cors.max-age}")
-    private Integer maxAge;
-
-    @Value("${application.cors.allowed-headers}")
-    private String allowedHeaders;
-
-    @Value("${application.cors.exposed-headers}")
-    private String exposedHeaders;
+    public String[] getAllowedOriginsArray() {
+        return ApplicationVariablesUtils.splitStringToArrayByPattern(allowedOriginsArray);
+    }
 }
